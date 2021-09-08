@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <title>Title</title>
+</head>
+<body>
+    <div style="box-shadow: rgba(0, 0, 0, 0.4) 0px 0px 10px;height: 300px;margin-top: 40px;
+     width: 600px;margin: 20px auto;padding: 15px;height: 600px">
+        <div style="margin: auto;text-align: center;">
+            <h1 style="margin-bottom: 30px">Liên Hệ</h1>
+        </div>
+
+        <form id="myForm" method="post">
+            <div class="form-group">
+                <input type="text" required class="form-control" name="hoTen" id="hoTen" aria-describedby="emailHelp" placeholder="Họ Tên">
+            </div>
+            <div class="form-group">
+                <input type="email" required class="form-control" name="email" id="email" placeholder="Email">
+            </div>
+            <div class="form-group">
+                <input type="text" required class="form-control" name="phoneNumber" id="phoneNumber" placeholder="Số điện thoại">
+            </div>
+            <div class="form-group">
+               <textarea id="noiDung" required name="noiDung" class="form-control"  placeholder="Nội dung.."  rows="4" cols="50">
+
+                </textarea>
+            </div>
+            <button style="margin-top: 20px" type="submit" class="btn btn-primary btn-block">Gửi</button>
+
+
+        </form>
+        <a style="margin-top: 20px" href="/ds-lien-he" class="btn btn-success btn-block">Xem danh sách liên hệ</a>
+        <div style="margin: auto;text-align: center;">
+            <p style="color: green;font-weight: bold;margin-top: 30px" id="result"></p>
+        </div>
+    </div>
+    <script>
+        const myForm = document.getElementById('myForm');
+
+        myForm.addEventListener('submit' ,function (e){
+            e.preventDefault();
+            const hoTen = document.getElementById('hoTen').value
+            const email = document.getElementById('email').value
+            const phoneNumber = document.getElementById('phoneNumber').value
+            const noDung = document.getElementById('noiDung').value
+            const dataSend = {
+                hoTen: hoTen,
+                email: email,
+                phoneNumber: phoneNumber,
+                noiDung: noDung
+            }
+            fetch("http://localhost:8080/add-lien-he/", {
+                method: 'POST',
+                headers: {
+                    Accept: "application/json, text/plain, */*",
+                    "Content-Type": "application/json",
+                    "Access-Control-Allow-Origin": "*",
+                },
+                body:JSON.stringify(dataSend)
+            }).then(function (response) {
+                console.log(response)
+                // The API call was successful!
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    return Promise.reject(response);
+                }
+            }).then(function (data) {
+                // This is the JSON from our response
+                console.log(data.message);
+                $('#result').html(data.message);
+            }).catch(function (err) {
+                // There was an error
+                console.warn('Something went wrong.', err);
+            });
+        })
+
+    </script>
+
+</body>
+</html>

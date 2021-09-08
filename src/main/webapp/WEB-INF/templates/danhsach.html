@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
+  <div style="text-align: center">
+    <h1 >Danh sách liên hệ</h1>
+  </div>
+
+  <div class="row" >
+    <div class="col-8" style="margin: 0 auto">
+      <table class="table">
+        <thead class="thead-light">
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Họ Tên</th>
+          <th scope="col">Email</th>
+          <th scope="col">Số điện thoai</th>
+          <th scope="col">Nội dung</th>
+        </tr>
+        </thead>
+        <tbody id="abc">
+
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <script>
+      fetch("http://localhost:8080/danh-sach-lien-he/", {
+        method: 'GET',
+      }).then(function (response) {
+        console.log(response)
+        // The API call was successful!
+        if (response.ok) {
+          return response.json();
+        } else {
+          return Promise.reject(response);
+        }
+      }).then(function (data) {
+        // This is the JSON from our response
+        console.log(data);
+        var html =``;
+        for (var i = 0 ; i< data.length;i++){
+          html+= `<tr>
+                <th scope="row">`+data[i].id+`</th>
+                <td>`+data[i].hoTen+`</td>
+                <td>`+data[i].email+`</td>
+                <td>`+data[i].phoneNumber+`</td>
+                <td>`+data[i].noiDung+`</td>
+              </tr>`
+
+        }
+        $('#abc').html(html);
+      }).catch(function (err) {
+        // There was an error
+        console.warn('Something went wrong.', err);
+      });
+
+  </script>
+</body>
+</html>
